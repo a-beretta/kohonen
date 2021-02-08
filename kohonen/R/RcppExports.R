@@ -25,6 +25,14 @@ RcppParallelBatchSupersom <- function(data, codes, numVars, weights, distanceFun
     .Call('_kohonen_RcppParallelBatchSupersom', PACKAGE = 'kohonen', data, codes, numVars, weights, distanceFunctions, numNAs, neighbourhoodDistances, neighbourhoodFct, radii, numEpochs, numCores)
 }
 
+RcppWeightedBatchSupersom <- function(data, codes, numVars, weights, obsWeights, distanceFunctions, numNAs, neighbourhoodDistances, neighbourhoodFct, radii, numEpochs) {
+    .Call('_kohonen_RcppWeightedBatchSupersom', PACKAGE = 'kohonen', data, codes, numVars, weights, obsWeights, distanceFunctions, numNAs, neighbourhoodDistances, neighbourhoodFct, radii, numEpochs)
+}
+
+RcppWeightedParallelBatchSupersom <- function(data, codes, numVars, weights, obsWeights, distanceFunctions, numNAs, neighbourhoodDistances, neighbourhoodFct, radii, numEpochs, numCores) {
+    .Call('_kohonen_RcppWeightedParallelBatchSupersom', PACKAGE = 'kohonen', data, codes, numVars, weights, obsWeights, distanceFunctions, numNAs, neighbourhoodDistances, neighbourhoodFct, radii, numEpochs, numCores)
+}
+
 RcppMap <- function(data, numVars, numNAs, codes, weights, distanceFunctions) {
     .Call('_kohonen_RcppMap', PACKAGE = 'kohonen', data, numVars, numNAs, codes, weights, distanceFunctions)
 }

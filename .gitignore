@@ -1,8 +1,12 @@
 # R history and RData files
 *.Rhistory
 *.RData
+*.Rproj.user/
+*.Rproj
+*.Rbuildignore
 
 # C/C++ object files and compiled libraries
 *.o
 *.so
 *.dll
+.Rproj.user

@@ -45,6 +45,37 @@ Rcpp::List RcppParallelBatchSupersom(
   );  
 
 // [[Rcpp::export]]
+Rcpp::List RcppWeightedBatchSupersom(
+    Rcpp::NumericMatrix data,
+    Rcpp::NumericMatrix codes,
+    Rcpp::IntegerVector numVars,
+    Rcpp::NumericVector weights,
+    Rcpp::NumericVector obsWeights,
+    Rcpp::ExpressionVector distanceFunctions,
+    Rcpp::IntegerMatrix numNAs,
+    Rcpp::NumericMatrix neighbourhoodDistances,
+    int neighbourhoodFct,
+    Rcpp::NumericVector radii,
+    int numEpochs
+  );
+
+// [[Rcpp::export]]
+Rcpp::List RcppWeightedParallelBatchSupersom(
+    Rcpp::NumericMatrix data,
+    Rcpp::NumericMatrix codes,
+    Rcpp::IntegerVector numVars,
+    Rcpp::NumericVector weights,
+    Rcpp::NumericVector obsWeights,
+    Rcpp::ExpressionVector distanceFunctions,
+    Rcpp::IntegerMatrix numNAs,
+    Rcpp::NumericMatrix neighbourhoodDistances,
+    int neighbourhoodFct,
+    Rcpp::NumericVector radii,
+    int numEpochs,
+    int numCores
+  );
+
+// [[Rcpp::export]]
 Rcpp::List RcppMap(
     Rcpp::NumericMatrix data,   /* objects to be mapped */
     Rcpp::IntegerVector numVars,

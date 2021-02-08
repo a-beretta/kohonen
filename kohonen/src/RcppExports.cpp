@@ -107,6 +107,49 @@ BEGIN_RCPP
     return rcpp_result_gen;
 END_RCPP
 }
+// RcppWeightedBatchSupersom
+Rcpp::List RcppWeightedBatchSupersom(Rcpp::NumericMatrix data, Rcpp::NumericMatrix codes, Rcpp::IntegerVector numVars, Rcpp::NumericVector weights, Rcpp::NumericVector obsWeights, Rcpp::ExpressionVector distanceFunctions, Rcpp::IntegerMatrix numNAs, Rcpp::NumericMatrix neighbourhoodDistances, int neighbourhoodFct, Rcpp::NumericVector radii, int numEpochs);
+RcppExport SEXP _kohonen_RcppWeightedBatchSupersom(SEXP dataSEXP, SEXP codesSEXP, SEXP numVarsSEXP, SEXP weightsSEXP, SEXP obsWeightsSEXP, SEXP distanceFunctionsSEXP, SEXP numNAsSEXP, SEXP neighbourhoodDistancesSEXP, SEXP neighbourhoodFctSEXP, SEXP radiiSEXP, SEXP numEpochsSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type codes(codesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type numVars(numVarsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type obsWeights(obsWeightsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::ExpressionVector >::type distanceFunctions(distanceFunctionsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerMatrix >::type numNAs(numNAsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type neighbourhoodDistances(neighbourhoodDistancesSEXP);
+    Rcpp::traits::input_parameter< int >::type neighbourhoodFct(neighbourhoodFctSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type radii(radiiSEXP);
+    Rcpp::traits::input_parameter< int >::type numEpochs(numEpochsSEXP);
+    rcpp_result_gen = Rcpp::wrap(RcppWeightedBatchSupersom(data, codes, numVars, weights, obsWeights, distanceFunctions, numNAs, neighbourhoodDistances, neighbourhoodFct, radii, numEpochs));
+    return rcpp_result_gen;
+END_RCPP
+}
+// RcppWeightedParallelBatchSupersom
+Rcpp::List RcppWeightedParallelBatchSupersom(Rcpp::NumericMatrix data, Rcpp::NumericMatrix codes, Rcpp::IntegerVector numVars, Rcpp::NumericVector weights, Rcpp::NumericVector obsWeights, Rcpp::ExpressionVector distanceFunctions, Rcpp::IntegerMatrix numNAs, Rcpp::NumericMatrix neighbourhoodDistances, int neighbourhoodFct, Rcpp::NumericVector radii, int numEpochs, int numCores);
+RcppExport SEXP _kohonen_RcppWeightedParallelBatchSupersom(SEXP dataSEXP, SEXP codesSEXP, SEXP numVarsSEXP, SEXP weightsSEXP, SEXP obsWeightsSEXP, SEXP distanceFunctionsSEXP, SEXP numNAsSEXP, SEXP neighbourhoodDistancesSEXP, SEXP neighbourhoodFctSEXP, SEXP radiiSEXP, SEXP numEpochsSEXP, SEXP numCoresSEXP) {
+BEGIN_RCPP
+    Rcpp::RObject rcpp_result_gen;
+    Rcpp::RNGScope rcpp_rngScope_gen;
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type data(dataSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type codes(codesSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerVector >::type numVars(numVarsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type weights(weightsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type obsWeights(obsWeightsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::ExpressionVector >::type distanceFunctions(distanceFunctionsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::IntegerMatrix >::type numNAs(numNAsSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericMatrix >::type neighbourhoodDistances(neighbourhoodDistancesSEXP);
+    Rcpp::traits::input_parameter< int >::type neighbourhoodFct(neighbourhoodFctSEXP);
+    Rcpp::traits::input_parameter< Rcpp::NumericVector >::type radii(radiiSEXP);
+    Rcpp::traits::input_parameter< int >::type numEpochs(numEpochsSEXP);
+    Rcpp::traits::input_parameter< int >::type numCores(numCoresSEXP);
+    rcpp_result_gen = Rcpp::wrap(RcppWeightedParallelBatchSupersom(data, codes, numVars, weights, obsWeights, distanceFunctions, numNAs, neighbourhoodDistances, neighbourhoodFct, radii, numEpochs, numCores));
+    return rcpp_result_gen;
+END_RCPP
+}
 // RcppMap
 Rcpp::List RcppMap(Rcpp::NumericMatrix data, /* objects to be mapped */     Rcpp::IntegerVector numVars, Rcpp::IntegerMatrix numNAs, Rcpp::NumericMatrix codes, Rcpp::NumericVector weights, Rcpp::ExpressionVector distanceFunctions);
 RcppExport SEXP _kohonen_RcppMap(SEXP dataSEXP, SEXP numVarsSEXP, SEXP numNAsSEXP, SEXP codesSEXP, SEXP weightsSEXP, SEXP distanceFunctionsSEXP) {
@@ -131,6 +174,8 @@ static const R_CallMethodDef CallEntries[] = {
     {"_kohonen_RcppSupersom", (DL_FUNC) &_kohonen_RcppSupersom, 11},
     {"_kohonen_RcppBatchSupersom", (DL_FUNC) &_kohonen_RcppBatchSupersom, 10},
     {"_kohonen_RcppParallelBatchSupersom", (DL_FUNC) &_kohonen_RcppParallelBatchSupersom, 11},
+    {"_kohonen_RcppWeightedBatchSupersom", (DL_FUNC) &_kohonen_RcppWeightedBatchSupersom, 11},
+    {"_kohonen_RcppWeightedParallelBatchSupersom", (DL_FUNC) &_kohonen_RcppWeightedParallelBatchSupersom, 12},
     {"_kohonen_RcppMap", (DL_FUNC) &_kohonen_RcppMap, 6},
     {NULL, NULL, 0}
 };

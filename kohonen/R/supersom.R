@@ -5,6 +5,7 @@ supersom <- function(data,
                      radius = quantile(nhbrdist, 2/3),
                      whatmap = NULL,
                      user.weights = 1,
+                     obs.weights = NULL,
                      maxNA.fraction = 0L,
                      keep.data = TRUE,
                      dist.fcts = NULL,
@@ -18,11 +19,14 @@ supersom <- function(data,
   data <- check.data(data)
   narows <- check.data.na(data, maxNA.fraction = maxNA.fraction)
   data <- remove.data.na(data, narows)
+  if (!is.null(obs.weights) & length(narows) != 0) 
+    obs.weights <- obs.weights[-narows]
 
   ## full data is the complete list, but with rows removed that
   ## contain too many NAs
   full.data <- data
   nmat <- length(data)
+  
   
   ## ##########################################################################
   ## Whatmap
@@ -42,6 +46,17 @@ supersom <- function(data,
   data.matrix <- matrix(unlist(data), ncol = nobjects, byrow = TRUE)
   
   nNA <- getnNA(data, maxNA.fraction, nobjects)
+  
+  ## ##########################################################################
+  ## Check mode and obs.weights 
+  mode <- match.arg(mode)
+  if (!is.null(obs.weights)) {
+    if (!is.vector(obs.weights, mode = "numeric") | nobjects != length(obs.weights)) {
+      stop("Argument 'obs.weights' should be a numeric vector of length ",nobjects,".")
+    } else if (mode == "online") {
+      stop("Observation weights are not supported by the 'online' learning algorithm.")
+    }
+  }
   
   ## ##########################################################################
   ## Distances.
@@ -196,49 +211,82 @@ supersom <- function(data,
   
   ## ##########################################################################
   ## Go!
-  mode <- match.arg(mode)
-  switch(mode,
-  online = {
-    res <- RcppSupersom(data = data.matrix,
-                        codes = init.matrix,
-                        numVars = nvar,
-                        weights = weights,
-                        distanceFunctions = dist.ptrs,
-                        numNAs = nNA,
-                        neighbourhoodDistances = nhbrdist,
-                        neighbourhoodFct =
-                          as.integer(grid$neighbourhood.fct),
-                        alphas = alpha,
-                        radii = radius,
-                        numEpochs = rlen)
-  },
-  batch = {
-    res <- RcppBatchSupersom(data = data.matrix,
-                             codes = init.matrix,
-                             numVars = nvar,
-                             weights = weights,
-                             distanceFunctions = dist.ptrs,
-                             numNAs = nNA,
-                             neighbourhoodDistances = nhbrdist,
-                             neighbourhoodFct =
-                               as.integer(grid$neighbourhood.fct),
-                             radii = radius,
-                             numEpochs = rlen)
-  },
-  pbatch = {
-    res <- RcppParallelBatchSupersom(data = data.matrix,
-                                     codes = init.matrix,
-                                     numVars = nvar,
-                                     weights = weights,
-                                     distanceFunctions = dist.ptrs,
-                                     numNAs = nNA,
-                                     neighbourhoodDistances = nhbrdist,
-                                     neighbourhoodFct =
-                                       as.integer(grid$neighbourhood.fct),
-                                     radii = radius,
-                                     numEpochs = rlen,
-                                     numCores = cores)
-  })
+  if (!is.null(obs.weights)) {
+    switch(mode,
+           batch = {
+             res <- RcppWeightedBatchSupersom(data = data.matrix,
+                                              codes = init.matrix,
+                                              numVars = nvar,
+                                              weights = weights,
+                                              obsWeights = obs.weights,
+                                              distanceFunctions = dist.ptrs,
+                                              numNAs = nNA,
+                                              neighbourhoodDistances = nhbrdist,
+                                              neighbourhoodFct =
+                                                as.integer(grid$neighbourhood.fct),
+                                              radii = radius,
+                                              numEpochs = rlen)
+           },
+           pbatch = {
+             res <- RcppWeightedParallelBatchSupersom(data = data.matrix,
+                                                      codes = init.matrix,
+                                                      numVars = nvar,
+                                                      weights = weights,
+                                                      obsWeights = obs.weights,
+                                                      distanceFunctions = dist.ptrs,
+                                                      numNAs = nNA,
+                                                      neighbourhoodDistances = nhbrdist,
+                                                      neighbourhoodFct =
+                                                        as.integer(grid$neighbourhood.fct),
+                                                      radii = radius,
+                                                      numEpochs = rlen,
+                                                      numCores = cores)
+           })
+    
+  } else {
+    switch(mode,
+           online = {
+             res <- RcppSupersom(data = data.matrix,
+                                 codes = init.matrix,
+                                 numVars = nvar,
+                                 weights = weights,
+                                 distanceFunctions = dist.ptrs,
+                                 numNAs = nNA,
+                                 neighbourhoodDistances = nhbrdist,
+                                 neighbourhoodFct =
+                                   as.integer(grid$neighbourhood.fct),
+                                 alphas = alpha,
+                                 radii = radius,
+                                 numEpochs = rlen)
+           },
+           batch = {
+             res <- RcppBatchSupersom(data = data.matrix,
+                                      codes = init.matrix,
+                                      numVars = nvar,
+                                      weights = weights,
+                                      distanceFunctions = dist.ptrs,
+                                      numNAs = nNA,
+                                      neighbourhoodDistances = nhbrdist,
+                                      neighbourhoodFct =
+                                        as.integer(grid$neighbourhood.fct),
+                                      radii = radius,
+                                      numEpochs = rlen)
+           },
+           pbatch = {
+             res <- RcppParallelBatchSupersom(data = data.matrix,
+                                              codes = init.matrix,
+                                              numVars = nvar,
+                                              weights = weights,
+                                              distanceFunctions = dist.ptrs,
+                                              numNAs = nNA,
+                                              neighbourhoodDistances = nhbrdist,
+                                              neighbourhoodFct =
+                                                as.integer(grid$neighbourhood.fct),
+                                              radii = radius,
+                                              numEpochs = rlen,
+                                              numCores = cores)
+           })
+  }
   changes <- matrix(res$changes, ncol = nmap, byrow = TRUE)
   colnames(changes) <- names(data)
   mycodes <- res$codes
