@@ -19,8 +19,8 @@ som(X, ...)
 xyf(X, Y, ...)
 supersom(data, grid=somgrid(), rlen = 100, alpha = c(0.05, 0.01),
          radius = quantile(nhbrdist, 2/3), 
-         whatmap = NULL, user.weights = 1, maxNA.fraction = 0L,
-         keep.data = TRUE, dist.fcts = NULL,
+         whatmap = NULL, user.weights = 1, obs.weights = NULL,
+         maxNA.fraction = 0L, keep.data = TRUE, dist.fcts = NULL,
          mode = c("online", "batch", "pbatch"), cores = -1, init,
          normalizeDataLayers = TRUE)
 }
@@ -53,6 +53,8 @@ supersom(data, grid=somgrid(), rlen = 100, alpha = c(0.05, 0.01),
     of the same length as the \code{data} argument. In xyf maps, this
     argument provides the same functionality as the now-deprecated
     \code{xweight} argument that was used prior to version 3.0.}
+  \item{obs.weights}{vector of sampling (survey) weights, positive values 
+    associated with the observations (rows) in the data.}
   \item{maxNA.fraction}{the maximal fraction of values that may be NA to
     prevent the row to be removed.}
   \item{keep.data}{if TRUE, return original data and mapping
