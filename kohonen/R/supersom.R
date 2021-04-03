@@ -21,12 +21,10 @@ supersom <- function(data,
   data <- remove.data.na(data, narows)
   if (!is.null(obs.weights) & length(narows) != 0) 
     obs.weights <- obs.weights[-narows]
-
   ## full data is the complete list, but with rows removed that
   ## contain too many NAs
   full.data <- data
   nmat <- length(data)
-  
   
   ## ##########################################################################
   ## Whatmap
@@ -151,11 +149,9 @@ supersom <- function(data,
     }
   }
   init.matrix <- matrix(unlist(init), ncol = ncodes, byrow = TRUE)
-  
 
   ## ####################################################################
   ## Weights
-
   distance.weights <- orig.user.weights <- rep(0, nmat)
   if (length(whatmap) == 1) {
     weights <- user.weights <- 1
@@ -327,7 +323,8 @@ supersom <- function(data,
                    distance.weights = distance.weights,
                    whatmap = whatmap,
                    maxNA.fraction = maxNA.fraction,
-                   dist.fcts = orig.dist.fcts),
+                   dist.fcts = orig.dist.fcts,
+                   init = init),
               class = "kohonen")
   } else {
     structure(list(grid = grid,
